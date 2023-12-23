@@ -17,7 +17,7 @@ public class UserController {
 
     @PostMapping("/insert")
     public UserVO create(@RequestBody UserVO user){
-
+        System.out.println("시작");
         return userRepo.save(user);
     }
     @GetMapping("/{id}")
