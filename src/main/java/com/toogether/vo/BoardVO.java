@@ -28,7 +28,6 @@ public class BoardVO {
 
     public BoardVO() {
     }
-
     public BoardVO(int boardID, String boardTitle, String userID, String boardDate, String boardContent,
                    String boardCategory, String filename, String fileRealname) {
         this.boardID = boardID;

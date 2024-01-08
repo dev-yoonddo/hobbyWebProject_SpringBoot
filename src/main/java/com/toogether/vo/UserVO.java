@@ -42,6 +42,11 @@ public class UserVO {
 
     public UserVO() {}
 
+    public UserVO(String userID, String userPassword){
+        this.userID = userID;
+        this.userPassword = userPassword;
+    }
+
     public UserVO(String userID, String userName, String userEmail, String userBirth, String userPhone,String userPassword) {
         this.userID = userID;
         this.userName = userName;
