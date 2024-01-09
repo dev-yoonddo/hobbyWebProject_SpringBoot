@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 
@@ -15,10 +17,10 @@ import java.util.Map;
 public class HomeController{
 
     @Autowired
-    private final UserService service;
+    private final UserService userService;
 
     public HomeController(UserService service) {
-        this.service = service;
+        this.userService = service;
     }
     @RequestMapping("/")
     public String home() {
@@ -29,6 +31,14 @@ public class HomeController{
     public String community() {
         System.out.println("컨트롤러의 community() 메소드");
         return "community";
+    }
+
+    @RequestMapping("/logout")
+    public String logoutAction(HttpServletRequest request){
+        System.out.println("로그아웃");
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return "redirect:community";
     }
 //    @GetMapping("/get")
 //    public String Accessmain(Model model){

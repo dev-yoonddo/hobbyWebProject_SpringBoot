@@ -3,6 +3,7 @@ package com.toogether.controller;
 import com.toogether.repo.UserRepo;
 import com.toogether.service.UserService;
 import com.toogether.vo.UserVO;
+import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,52 +12,111 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
+import java.util.Map;
 
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private final UserService userService;
-    Model model;
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
+    //회원가입 페이지
     @RequestMapping("/join")
-    public String join() {
+    public String join(Model model) {
         System.out.println("컨트롤러의 join() 메소드");
         model.addAttribute("emailList", userService.getEmailList());
         return "join";
     }
-    @RequestMapping("/login")
+    //회원가입 실행
+    @PostMapping("/join")
+    public String joinAction(UserVO vo, Model model){
+        System.out.println("시작");
+        System.out.println(vo.toString());
+
+        int result = userService.joinAction(vo);
+        System.out.println("회원가입 결과 : " + result);
+        if(result == 1){
+            return "login";
+        }else {
+            model.addAttribute("joinError", "fail");
+            model.addAttribute("vo", vo);
+            return "join";
+        }
+    }
+    //아이디 중복 체크
+    @GetMapping("/join/checkID")
+    public void joinCheckID(@RequestParam (required = true) String userID, HttpServletResponse response) throws IOException {
+        PrintWriter script = response.getWriter();
+
+        System.out.println("아이디체크: " + userID);
+        int result = userService.joinCheckID(userID);
+        System.out.println("아이디체크 결과: " + result);
+        if(result == 0) {
+            script.print("fail");
+            script.close();
+        }else {
+            script.print("success");
+            script.close();
+        }
+    }
+    //로그인 페이지
+    @GetMapping("/login")
     public String login() {
         System.out.println("컨트롤러의 login() 메소드");
         return "login";
     }
-    @GetMapping("/update")
-    public String update(HttpSession session) {
+    //로그인 실행
+    @PostMapping("/login")
+    public String loginAction(@ModelAttribute UserVO vo, HttpSession session, Model model){
+        System.out.println("시작");
+//        HttpSession session = request.getSession(true);
+//        String userID = request.getParameter("userID");
+//        String userPassword = request.getParameter("userPassword");
+        String userID = vo.getUserID();
+        String userPassword = vo.getUserPassword();
+        int result = userService.loginAction(userID, userPassword);
+        System.out.println("로그인 요청 : " + result);
+        System.out.println("아이디 : " + userID + "비밀번호" + userPassword);
+
+        if(result == 1){
+            session.setAttribute("userID", userID);
+            return "redirect:/community";
+        }else if(result == 0){
+            model.addAttribute("loginError", "fail");
+            return "login";
+        }else {
+            return "join";
+        }
+    }
+
+    //회원 정보 페이지
+    @GetMapping("/user/update")
+    public String update(HttpSession session, HttpServletResponse response, Model model) throws IOException {
         System.out.println("컨트롤러의 update() 메소드");
-        String userID = (String)session.getAttribute("userID");
-        UserVO vo = userService.getUserVO(userID);
-        model.addAttribute("vo",vo);
-        return "update";
+        PrintWriter script = response.getWriter();
+        String userID = null;
+        if(session.getAttribute("userID") != null) {
+            userID = (String) session.getAttribute("userID");
+            UserVO vo = userService.getUserVO(userID);
+            model.addAttribute("vo", vo);
+            return "userUpdate";
+        }
+        return "login";
+
     }
-    @PostMapping("/join/action")
-    public int joinAction(@RequestBody UserVO vo){
-        System.out.println("시작");
-        return userService.joinAction(vo);
-    }
-    @GetMapping("/login/action")
-    public boolean loginAction(@RequestBody String userID, String userPassword){
-        System.out.println("시작");
-        return userService.loginAction(userID, userPassword);
-    }
-    @PostMapping("/update/action")
-    public int userUpdateAction(@RequestBody UserVO vo){
+
+    //회원 정보 수정 실행
+    @PostMapping("/user/update")
+    public String userUpdateAction(UserVO vo){
         System.out.println("회원 정보 업데이트");
-        return userService.userUpdateAction(vo);
+        userService.userUpdateAction(vo);
+        return "/user/update";
     }
     @GetMapping("/delete/action")
     public String userDeleteAction(@RequestBody UserVO vo){

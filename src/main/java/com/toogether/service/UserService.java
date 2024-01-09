@@ -13,7 +13,7 @@ public interface UserService {
     int joinCheckID(String userID);
     int joinAction(UserVO vo);
     //로그인 실행
-    boolean loginAction(String userID, String userPassword);
+    int loginAction(String userID, String userPassword);
     UserVO getUserVO(String userID);
 
     //회원 정보 업데이트

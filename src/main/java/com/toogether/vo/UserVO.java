@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity(name="user")
+@Entity
 @Data //getter, setter를 선언하지 않고 사용할 수 있게 해주는 lombok 기능
 @Table(name="user")
 public class UserVO {
