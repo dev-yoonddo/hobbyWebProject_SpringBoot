@@ -20,5 +20,5 @@ public interface UserService {
     int userUpdateAction(UserVO vo);
 
     //회원 탈퇴
-    void userDeleteAction(UserVO vo);
+    void userDeleteAction(String userID);
 }

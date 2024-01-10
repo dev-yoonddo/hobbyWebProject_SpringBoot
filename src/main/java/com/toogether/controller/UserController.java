@@ -118,11 +118,19 @@ public class UserController {
         userService.userUpdateAction(vo);
         return "/user/update";
     }
-    @GetMapping("/delete/action")
-    public String userDeleteAction(@RequestBody UserVO vo){
-        System.out.println("회원 정보 업데이트");
-        userService.userDeleteAction(vo);
-        return "redirect::main";
+    @GetMapping("/user/delete")
+    public void userDeleteAction(@RequestParam String userID, HttpSession session, HttpServletResponse response) throws IOException {
+        PrintWriter script = response.getWriter();
+        System.out.println("회원 정보 삭제");
+        System.out.println(userID + "삭제");
+        if(userID != null && session.getAttribute("userID") != null) {
+            userService.userDeleteAction(userID);
+            session.invalidate();
+            script.print("success");
+            script.close();
+        }
+        script.print("fail");
+        script.close();
     }
 //    @GetMapping("/{id}")
 //    public String getUserVO(@PathVariable String id){

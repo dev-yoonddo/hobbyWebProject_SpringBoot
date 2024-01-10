@@ -98,8 +98,8 @@ public class UserServicelmpl implements UserService {
     }
     //회원 탈퇴
     @Override
-    public void userDeleteAction(UserVO vo) {
-        System.out.println("탈퇴유저: " +vo.getUserID());
-        userRepo.delete(userRepo.getById(vo.getUserID()));
+    public void userDeleteAction(String userID) {
+        System.out.println("탈퇴유저: " +userID);
+        userRepo.delete(userRepo.getById(userID));
     }
 }
