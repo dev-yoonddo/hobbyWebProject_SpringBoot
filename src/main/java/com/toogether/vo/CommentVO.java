@@ -25,7 +25,6 @@ public class CommentVO {
         this.userID = userID;
         this.cmtContent = cmtContent;
     }
-
     @Override
     public String toString() {
         return "CommentVO [cmtID=" + cmtID + ", boardID=" + boardID + ", userID=" + userID + ", cmtContent="

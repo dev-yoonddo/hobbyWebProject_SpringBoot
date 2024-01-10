@@ -32,7 +32,6 @@ public class HomeController{
         System.out.println("컨트롤러의 community() 메소드");
         return "community";
     }
-
     @RequestMapping("/logout")
     public String logoutAction(HttpServletRequest request){
         System.out.println("로그아웃");
