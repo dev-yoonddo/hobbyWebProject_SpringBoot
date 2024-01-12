@@ -1,0 +1,206 @@
+table {
+	border: 0px solid white;
+}
+
+tr {
+	height: 80px;
+	border-width: 0px;
+}
+
+th {
+	border-width: 0px;
+}
+
+th#title {
+	font-size: 30pt;
+	font-weight: bold;
+	color: #2E2F49;
+}
+
+td {
+	border: 1px solid #c8c8c8;
+	border-radius: 20px;
+	font-size: 11pt;
+	font-weight: bold;
+	width: 80px;
+	text-align: center;
+	padding: 10px;
+	margin: 5px;
+}
+
+td#sat:hover, td#sun:hover, td#etc:hover, td#holiday:hover {
+	font-size: 13pt;
+	font-weight: bold;
+	border-color: #FF9614;
+	cursor: pointer;
+}
+
+span.after-txt {
+	width: 30px;
+	font-size: 11pt;
+}
+
+td#sunday {
+	font-size: 20pt;
+	background-color: #A4C3FF;
+	border-color: white;
+	color: #2E2F49;
+}
+
+td.etcday {
+	font-size: 20pt;
+	background-color: #EBF5FF;
+	border-color: white;
+	color: #2E2F49;
+}
+
+td#saturday {
+	font-size: 20pt;
+	background-color: #A4C3FF;
+	border-color: white;
+	color: #2E2F49;
+}
+
+td#sun {
+	color: #FF9614;
+	text-align: left;
+	vertical-align: top;
+}
+
+td#etc {
+	color: #2E2F49;
+	text-align: left;
+	vertical-align: top;
+}
+
+td#sat {
+	color: #FF9614;
+	text-align: left;
+	vertical-align: top;
+}
+
+td.beforesun {
+	color: #FF9614;
+	text-align: left;
+	vertical-align: top;
+	background-color: #dcdcdc;
+}
+
+td.before {
+	color: #787878;
+	text-align: left;
+	vertical-align: top;
+	background-color: #dcdcdc;
+}
+
+td.aftersat {
+	color: #FF9614;
+	text-align: left;
+	vertical-align: top;
+	background-color: #dcdcdc;
+}
+
+td.after {
+	color: #787878;
+	text-align: left;
+	vertical-align: top;
+	background-color: #dcdcdc;
+}
+
+.select {
+	width: 120px;
+	height: 30px;
+	display: flex;
+	align-items: center;
+	float: left;
+}
+
+select {
+	width: 90px;
+	height: 30px;
+}
+
+td#holiday {
+	color: #FF9614;
+	text-align: left;
+	vertical-align: top;
+	background-color: white;
+}
+
+td#holiday>span {
+	margin-left: 5px;
+}
+
+span {
+	font-size: 9pt;
+}
+
+#select-month {
+	justify-content: center;
+	align-items: center;
+}
+/*종 아이콘 애니메이션*/
+.bell {
+	animation: ani 1s infinite; /* keyframe이름, 지속시간, 반복횟수 */
+}
+
+@keyframes ani { 
+	0%{
+	transform: rotate(-30deg);
+	}
+	50%{
+	transform: rotate(30deg);
+	}
+	100%{
+	transform: rotate(-30deg);
+	}
+}
+
+.clickWrap {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, .3, 0, .6);
+	text-align: center;
+	display: flex;
+	justify-content: center;
+	z-index: 500;
+	align-items: center;
+}
+
+#wrapInner1 {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	background: none;
+	font-size: 15px;
+	font-weight: bold;
+	border-radius: 10px;
+	height: 100%;
+	z-index: 710;
+}
+
+#wrapInner2 {
+	margin: 0 auto;
+	background: none;
+	font-weight: bold;
+	width: 400px;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	z-index: 710;
+}
+
+#wrapSkeds {
+	width: 400px;
+	min-height: 200px;
+	max-height: 500px;
+	border-radius: 10px;
+	border: 4px solid #2E2F49;
+	color: #2E2F49;
+	background: white;
+	z-index: 720;
+}
