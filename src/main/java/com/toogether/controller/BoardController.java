@@ -1,18 +1,21 @@
 package com.toogether.controller;
 
+import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.mapper.BoardUpdateMapping;
 import com.toogether.service.BoardService;
 import com.toogether.vo.BoardVO;
+import com.toogether.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping(value="/community")
@@ -36,8 +39,11 @@ public class BoardController {
     }
 
     //1개 글 보기
-    @GetMapping("/{category}/{id}")
-    public String view(@PathVariable("category") String category, @PathVariable("id") int boardID, Model model){
+    @GetMapping("/{category}/{title}/{id}")
+    public String view(@PathVariable("category") String category,
+                       @PathVariable("title") String boardTitle,
+                       @PathVariable("id") int boardID,
+                       Model model){
 
         BoardVO vo = boardService.getBoardVO(boardID);
         System.out.println("글 보기: " + vo);
@@ -46,22 +52,31 @@ public class BoardController {
     }
 
     //글 수정 페이지
-    @GetMapping("/update/{id}")
-    public String update(@PathVariable("id") int boardID, Model model){
+    @GetMapping("/{title}/{id}")
+    public String update(@PathVariable("title") String boardTitle,@PathVariable("id") int boardID, Model model){
         BoardVO vo = boardService.getBoardVO(boardID);
         System.out.println("글 수정: " + vo);
         model.addAttribute("vo",vo);
         return "update";
     }
+
     //글 수정 실행
-    @PostMapping("/update/{id}")
-    public String updateAction(@PathVariable("id") int boardID, BoardUpdateMapping vo, Model model){
-        System.out.println("글 수정: " + vo);
-        int result = boardService.updateAction(vo);
-        if(result > 0 ){
-            model.addAttribute("vo",vo);
-            return "redirect:/community/"+vo.getBoardCategory().toLowerCase()+"/"+boardID;
+    @PostMapping("/{title}/{id}")
+    public String updateAction(@PathVariable("id")int boardID,
+                               BoardUpdateDTO vo,
+                               Model model) throws UnsupportedEncodingException {
+        System.out.println("글 수정 실행: " + vo);
+        Optional<BoardVO> updatevo = boardService.updateAction(vo);
+        //int result = boardService.updateAction(vo);
+        System.out.println("글 수정 결과: " + updatevo);
+         if(updatevo.isPresent()){
+             //한글 깨짐
+             String title = updatevo.get().getBoardTitle();
+             title = URLEncoder.encode(title,"UTF-8");
+
+             model.addAttribute("vo",vo);
+            return "redirect:/community/"+vo.getBoardCategory().toLowerCase()+"/"+title+"/"+boardID;
         }
-        return "/update/"+boardID;
+        return "/"+vo.getBoardTitle()+"/"+boardID;
     }
 }

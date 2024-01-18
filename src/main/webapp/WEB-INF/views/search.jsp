@@ -274,7 +274,7 @@ th span{
 				        <tr class="board-row">
 				        	<td>${vo.viewCount}</td>
 				        	<td>
-				        	<a id="click-view" onclick="view('${category}','${vo.boardID}')">${vo.boardTitle}
+				        	<a id="click-view" onclick="view('${category}','${vo.boardTitle}','${vo.boardID}')">${vo.boardTitle}
 				        	<c:if test="${not empty vo.filename}">
                                 &nbsp;<i class="fa-solid fa-paperclip"></i>
                             </c:if>
@@ -321,10 +321,10 @@ th span{
 </div>
 </footer>
 <script>
-function view(category,id){
+function view(category, title, id){
     console.log(category);
     console.log(id);
-	location.href='/community/'+category+'/'+id.toString();
+	location.href='/community/'+category+'/'+title+'/'+id.toString();
 }
 </script>
 <script>

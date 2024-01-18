@@ -66,7 +66,8 @@ public class BoardVO {
         this.fileRealname = fileRealname;
     }
 
-    public void update(String boardTitle, String boardContent, String boardCategory, String filename, String fileRealname, int fileDownCount){
+    public void update(int boardID, String boardTitle, String boardContent, String boardCategory, String filename, String fileRealname, int fileDownCount){
+        this.boardID = boardID;
         this.boardTitle = boardTitle;
         this.boardContent = boardContent;
         this.boardCategory = boardCategory;

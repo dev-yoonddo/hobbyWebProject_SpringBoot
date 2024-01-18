@@ -483,7 +483,7 @@ table caption{
 				<c:if test="${not empty userID}">
 					<button type="button" class="btn-blue" id="cmt-write-btn" onclick="cmtAction()"><span>댓글쓰기</span></button>
 					<c:if test="${vo.userID == userID}">
-						<button type="button" class="btn-blue" id="update" onclick="location.href='/community/update/${vo.boardID}'"><span>수정</span></button>
+						<button type="button" class="btn-blue" id="update" onclick="location.href='/community/${vo.boardTitle}/${vo.boardID}'"><span>수정</span></button>
 						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='/delete/${category}/${vo.boardID}'}"><span>삭제</span></button>
 					</c:if>
 					<c:if test="${vo.userID == 'manager'}">

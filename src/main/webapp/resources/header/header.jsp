@@ -18,7 +18,7 @@
 		<nav class="navbar">
 			<nav class="navbar_left">
 				<div class="navbar_logo">
-					<a href="mainPage" id="mainlogo">TOGETHER</a>
+					<a href="/" id="mainlogo">TOGETHER</a>
 				</div>
 				<ul class="navbar_menu" style="float: left;">
 					<li><a href="/community" class="menu">COMMUNITY</a></li>

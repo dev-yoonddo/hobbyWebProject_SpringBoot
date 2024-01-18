@@ -22,15 +22,15 @@ public class HomeController{
     public HomeController(UserService service) {
         this.userService = service;
     }
-    @RequestMapping("/")
-    public String home() {
-        System.out.println("컨트롤러의 home() 메소드");
-        return "redirect:community";
-    }
-    @RequestMapping("/community")
+    @RequestMapping(value={"/community"})
     public String community() {
         System.out.println("컨트롤러의 community() 메소드");
         return "community";
+    }
+    @GetMapping(value={"/", "/user/community"})
+    public String home() {
+        System.out.println("컨트롤러의 home() 메소드");
+        return "redirect:/community";
     }
     @RequestMapping("/logout")
     public String logoutAction(HttpServletRequest request){
