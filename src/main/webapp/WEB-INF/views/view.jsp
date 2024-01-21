@@ -317,6 +317,7 @@ table caption{
 </style>
 <body>
 <%
+    PrintWriter script = response.getWriter();
 	//userID 가져오기
 	String userID = null;
 	if(session.getAttribute("userID") != null){
@@ -349,6 +350,13 @@ table caption{
 	}
 	*/
 %>
+<!-- 삭제된 게시글이면 이전 페이지로 돌아가기-->
+<c:if test="${not empty avlb and avlb == '0'}">
+<script>
+    alert('삭제된 게시글입니다');
+    history.back();
+</script>
+</c:if>
 
 <!-- header -->
 <header id="header">
@@ -365,7 +373,7 @@ table caption{
 				<c:set var="vo" value="${vo}"/>
 				<c:set var="category" value="${(vo.boardCategory).toLowerCase()}"/>
 				<c:set var="date" value="${fn:substring(vo.boardDate,0,16)}"/>
-			
+
 				<!-- 공지사항은 카테고리가 아닌 제목을 출력한다. -->
 				<c:choose>
 					<c:when test="${vo.boardCategory == 'NOTICE'}">
@@ -387,7 +395,7 @@ table caption{
 					<div id="tb-top-2">
 						<div id="count-item">
 							<div id="count">
-								<span>
+								<span id="heart-count">
 								<c:choose>
 									<c:when test="${exist == 'Y' }">								
 							    	<i id="heart2" class="fa-solid fa-heart" onclick="heartAction('exist')"></i>&nbsp;${vo.heartCount}
@@ -474,20 +482,20 @@ table caption{
 				<div id="btnList">
 				<c:choose>
 					<c:when test="${vo.boardCategory == 'NOTICE'}">
-						<button type="button" id="list" class="btn-blue" onclick="location.href='community'"><span>목록</span></button>					
+						<button type="button" id="list" class="btn-blue" onclick="location.href='history.back()'"><span></span></button>
 					</c:when>
 					<c:otherwise>
-						<button type="button" id="list" class="btn-blue" onclick="location.href='/search/${category}'"><span>목록</span></button>
+						<button type="button" id="list" class="btn-blue" onclick="location.href='/community/${category}'"><span>목록</span></button>
 					</c:otherwise>
 				</c:choose>
 				<c:if test="${not empty userID}">
 					<button type="button" class="btn-blue" id="cmt-write-btn" onclick="cmtAction()"><span>댓글쓰기</span></button>
 					<c:if test="${vo.userID == userID}">
-						<button type="button" class="btn-blue" id="update" onclick="location.href='/community/${vo.boardTitle}/${vo.boardID}'"><span>수정</span></button>
-						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='/delete/${category}/${vo.boardID}'}"><span>삭제</span></button>
+						<button type="button" class="btn-blue" id="update" onclick="location.href='/community/newpost/${vo.boardID}'"><span>수정</span></button>
+						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='/community/delpost/${vo.boardID}?category=${vo.boardCategory}'}"><span>삭제</span></button>
 					</c:if>
 					<c:if test="${vo.userID == 'manager'}">
-						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='deleteAction?boardID=${vo.boardID}&category=${vo.boardCategory}'}"><span>삭제</span></button>
+						<button type="button" class="btn-blue" id="btn-del" onclick="if(confirm('정말로 삭제하시겠습니까?')){location.href='/community/delpost/${vo.boardID}?category=${vo.boardCategory}'}"><span>삭제</span></button>
 					</c:if>
 				</c:if>
 				</div>
@@ -626,7 +634,7 @@ function heartAction(value){
 	console.log(value);
 	if(userID === null || userID === ''){
 		alert('로그인이 필요합니다');
-		location.href='login';
+		location.href='/login';
 	}else{
 		var data = {
 	          userID : userID,
@@ -635,7 +643,7 @@ function heartAction(value){
 	    };
 	    $.ajax({
 	        type: 'POST',
-	        url: '/heart',
+	        url: '/community/post/heart',
 	        data: data,
 	        success: function (response) {
 		    	if (response === 'success') {
@@ -654,7 +662,7 @@ function heartAction(value){
 }
 //요소 새로고침
 function reload(){
-		$('#container').load(location.href+' #container');
+		$('#heart-count').load(location.href+' #heart-count');
 }
 
 //댓글쓰기를 클릭하면 댓글 입력 창 보이기

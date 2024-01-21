@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @DynamicUpdate
 @Data
 @Table(name="board")
-public class BoardVO {
+public class BoardVO implements Comparable<BoardVO>{
 
     @Id
     @Column(name = "boardID")
@@ -74,6 +74,20 @@ public class BoardVO {
         this.filename = filename;
         this.fileRealname = fileRealname;
         this.fileDownCount = fileDownCount;
+    }
+
+    // boardlist 내림차순 정렬을 위해 implement Comparable<BoardVO> interface 를 implement하고
+    // compareTo() 메서드를 Override 한다.
+    // 이 외에 새로운 클래스를 만들어 Comparator<BoardVO> interface를 implement하고
+    //         Collections.sort(list, new 생성한클래스().reversed()); 를 사용해도 된다. 이 방법은 정렬 값을 여러개 사용할 때 유용하다.
+    @Override
+    public int compareTo(BoardVO vo){
+        if(vo.boardID < boardID){
+            return 1;
+        }else if(vo.boardID > boardID){
+            return -1;
+        }
+        return 0;
     }
     @Override
     public String toString() {

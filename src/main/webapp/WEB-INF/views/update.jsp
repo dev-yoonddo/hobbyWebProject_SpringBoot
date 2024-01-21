@@ -219,7 +219,7 @@ if(session.getAttribute("userID")!=null){
 	<%=userID%> 님 안녕하세요
 	</h3>
 	<br>
-	<form action="/community/${vo.boardTitle}/${vo.boardID}" enctype="multipart/form-data" method="POST">
+	<form action="/community/newpost/${vo.boardID}" enctype="multipart/form-data" method="POST">
 		<div class="right-row">
 		    <!--form method에 get,post만 적용되기 때문에 input을 따로 삽입한다.-->
 		    <input type="hidden" name="_method" value="PUT"/>

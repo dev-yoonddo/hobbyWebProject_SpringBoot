@@ -233,10 +233,10 @@ th span{
 	String userID=null;
 	int boardID = 0;
 	String boardCategory = null;
+	String avlb = null;
 	if(session.getAttribute("userID")!=null){
 		userID=(String)session.getAttribute("userID");
 	}
-
 %>
 <header id="header">
 	<jsp:include page="/resources/header/header.jsp"/>
@@ -306,7 +306,7 @@ th span{
 		</c:if>
 		<button type="button" class="btn-blue" id="search" onclick="location.href='/community'"><span>돌아가기</span></button>
 		<c:if test="${not empty userID}">
-			<button type="button" class="btn-blue" id="write" onclick="location.href='/write'"><span>글쓰기</span></button>
+			<button type="button" class="btn-blue" id="write" onclick="location.href='/community/newpost?category=${category}'"><span>글쓰기</span></button>
 		</c:if>
 	</div>
 </section>
@@ -324,7 +324,7 @@ th span{
 function view(category, title, id){
     console.log(category);
     console.log(id);
-	location.href='/community/'+category+'/'+title+'/'+id.toString();
+	location.href='/community/post/'+id.toString();
 }
 </script>
 <script>
