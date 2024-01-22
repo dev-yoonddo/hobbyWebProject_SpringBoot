@@ -1,5 +1,6 @@
 package com.toogether.service.lmpl;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.repo.BoardRepo;
 import com.toogether.repo.HeartRepo;
@@ -7,8 +8,13 @@ import com.toogether.service.BoardService;
 import com.toogether.vo.BoardVO;
 import com.toogether.vo.HeartVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.query.JpaQueryMethod;
+import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -59,7 +65,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardVO writeAction(BoardVO vo){
         System.out.println("글 작성 내용: " + vo);
-        
+        vo.setBoardID(getBoardIdx() + 1);
+        System.out.println("새 글 번호: "+vo.getBoardID());
         return boardRepo.save(vo);
     }
     @Override
@@ -138,5 +145,16 @@ public class BoardServiceImpl implements BoardService {
             System.out.println("하트수: " + v);
         });
         return 1;
+    }
+    @Override
+    public int getBoardIdx(){
+        BoardVO vo = new BoardVO();
+        List<Integer> boardID = boardRepo.findByBoardID();
+        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
+        int boardIdx = queryFactory.select(vo.getBoardID().max()).from(vo)
+                        .fatchOne();
+
+        System.out.println(boardID);
+        return Collections.max(boardID);
     }
 }

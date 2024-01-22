@@ -1,12 +1,10 @@
 package com.toogether.vo;
 
+import com.querydsl.core.types.dsl.EntityPathBase;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @DynamicUpdate
@@ -14,7 +12,7 @@ import javax.persistence.Table;
 @Table(name="board")
 public class BoardVO implements Comparable<BoardVO>{
 
-    @Id
+    @Id @GeneratedValue
     @Column(name = "boardID")
     private int boardID;
 

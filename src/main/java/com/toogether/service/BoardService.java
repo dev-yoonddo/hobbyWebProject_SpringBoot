@@ -21,4 +21,5 @@ public interface BoardService{
     String heartCheck(int boardID, String userID);
     int heartAction(int boardID, String userID, String value);
     int heartCountAction(int boardID, String value);
+    int getBoardIdx();
 }
