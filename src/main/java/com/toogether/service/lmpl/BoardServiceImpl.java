@@ -5,27 +5,38 @@ import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.repo.BoardRepo;
 import com.toogether.repo.HeartRepo;
 import com.toogether.service.BoardService;
+import com.toogether.service.FileService;
 import com.toogether.vo.BoardVO;
+import com.toogether.vo.FileVO;
 import com.toogether.vo.HeartVO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.query.JpaQueryMethod;
 import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
-public class BoardServiceImpl implements BoardService {
+public class BoardServiceImpl extends FileServiceImpl implements BoardService {
 
     @Autowired
     private final BoardRepo boardRepo;
     private final HeartRepo heartRepo;
+
+    @Value("${file.dir}")
+    private String fileDir;
 
     public BoardServiceImpl(BoardRepo boardRepo, HeartRepo heartRepo) {
         this.boardRepo = boardRepo;
@@ -63,10 +74,18 @@ public class BoardServiceImpl implements BoardService {
         return  vo;
     }
     @Override
-    public BoardVO writeAction(BoardVO vo){
+    public BoardVO writeAction(BoardVO vo) {
+        LocalDateTime date = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println("글 작성 내용: " + vo);
-        vo.setBoardID(getBoardIdx() + 1);
-        System.out.println("새 글 번호: "+vo.getBoardID());
+        int boardID = getBoardIdx();
+        vo.setBoardID(boardID + 1); // 새 글 번호
+        vo.setBoardDate(date.format(formatter)); // 새 글 작성 시간
+        vo.setBoardAvailable(1); // 유효한 값으로 변경
+
+        System.out.println("새 글 번호: "+ vo.getBoardID());
+        System.out.println("새 글 작성시간: "+ vo.getBoardDate());
+
         return boardRepo.save(vo);
     }
     @Override
@@ -148,13 +167,17 @@ public class BoardServiceImpl implements BoardService {
     }
     @Override
     public int getBoardIdx(){
-        BoardVO vo = new BoardVO();
-        List<Integer> boardID = boardRepo.findByBoardID();
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        int boardIdx = queryFactory.select(vo.getBoardID().max()).from(vo)
-                        .fatchOne();
+        return boardRepo.findByMax();
+    }
 
-        System.out.println(boardID);
-        return Collections.max(boardID);
+    @Override
+    public int fileDownCount(int boardID){
+        BoardVO vo = boardRepo.getById(boardID);
+        boardRepo.findById(boardID).ifPresent( v-> {
+            v.setFileDownCount(vo.getFileDownCount() + 1);
+            boardRepo.save(v);
+            System.out.println("다운로드횟수++" + v);
+        });
+        return 1;
     }
 }

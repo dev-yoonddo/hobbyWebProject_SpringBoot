@@ -420,7 +420,7 @@ table caption{
 							<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 								<td class="view-file" id="view-file-1" width="35%">
 									<button id="close-file" onclick="closeFile()">X</button>
-									<img src="/resources/upload/${vo.fileRealname}" width="300px">
+									<img src="/upload/${vo.fileRealname}" width="300px">
 								</td>
 							</c:if>
 						</tr>
@@ -438,7 +438,7 @@ table caption{
 							<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 								<td class="view-file" id="view-file-1" width="35%">
 									<button id="close-file" onclick="closeFile()">X</button>
-									<img src="/resources/upload/${vo.fileRealname}" width="300px"/>
+									<img src="/upload/${vo.fileRealname}" width="300px"/>
 								</td>
 							</c:if>
 						</tr>
@@ -448,7 +448,7 @@ table caption{
 				<c:if test="${not empty vo.filename and vo.filename.endsWith('.jpg') or vo.filename.endsWith('.JPG') or vo.filename.endsWith('.png') or vo.filename.endsWith('.PNG')}">
 					<tr class="tr" id="view-file-2" height="200px">
 						<td width="300px">
-							<img src="/resources/upload/${vo.fileRealname}" />
+							<img src="/upload/${vo.fileRealname}" />
 						</td>
 						<td width="50px;">
 							<button id="close-file" onclick="closeFile()">X</button>
@@ -464,7 +464,7 @@ table caption{
 					<c:choose>
 						<c:when test="${not empty vo.filename}">
 							<!-- form태그로 전송하는 방법 -->
-							<form id="download_form" action="<%=request.getContextPath()%>/download" method="get">
+							<form id="download_form" action="<%=request.getContextPath()%>/community/download/${vo.boardID}" method="get">
 							<!-- 텍스트 클릭시 다운로드를 하기 위해 onclick으로 javascript를 이용해 submit기능을 대신한다. -->
 								<div class="files" id="file_form" onclick="submit()" style="width: 300px; cursor: pointer;"> 
 									<div id="filename">${vo.filename}</div>(다운로드 ${vo.fileDownCount}회)

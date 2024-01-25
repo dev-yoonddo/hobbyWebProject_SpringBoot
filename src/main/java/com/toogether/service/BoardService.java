@@ -1,16 +1,19 @@
 package com.toogether.service;
 
 import com.toogether.dto.BoardUpdateDTO;
-import com.toogether.mapper.BoardUpdateMapping;
 import com.toogether.vo.BoardVO;
-import com.toogether.vo.HeartVO;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public interface BoardService{
+public interface BoardService extends FileService {
     List<BoardVO> getBoardList(String category);
     void viewCount(int boardID);
     BoardVO getBoardVO(int boardID);
@@ -22,4 +25,5 @@ public interface BoardService{
     int heartAction(int boardID, String userID, String value);
     int heartCountAction(int boardID, String value);
     int getBoardIdx();
+    int fileDownCount(int boardID);
 }

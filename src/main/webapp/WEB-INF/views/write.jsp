@@ -267,7 +267,7 @@ if(session.getAttribute("userID") != null){
 						<span id="txt">파일첨부 :</span>&nbsp;&nbsp;
 						<label for="fileupload" id="click" class="btn-blue">click !</label>&nbsp;&nbsp;
 						<div id="filename"></div>
-						<input type="file" id="fileupload" name="fileupload" onchange="filename(this)" >
+						<input type="file" id="fileupload" name="file" onchange="filename(this)" >
 					</div>
 					<div id="btn">
 						<button type="submit" class="btn-blue" value="글쓰기">

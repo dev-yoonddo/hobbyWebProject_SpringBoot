@@ -1,16 +1,13 @@
 package com.toogether.controller;
 
-import com.toogether.repo.UserRepo;
+import com.toogether.service.BoardService;
 import com.toogether.service.UserService;
-import com.toogether.vo.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Map;
 
 
 @Controller
@@ -18,9 +15,11 @@ public class HomeController{
 
     @Autowired
     private final UserService userService;
+    private final BoardService boardService;
 
-    public HomeController(UserService service) {
+    public HomeController(UserService service, BoardService boardService) {
         this.userService = service;
+        this.boardService = boardService;
     }
     @RequestMapping(value={"/community"})
     public String community() {

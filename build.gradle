@@ -1,8 +1,4 @@
-buildscript { //dsl
-	ext {
-		queryDslVersion = "5.0.0"
-	}
-}
+
 plugins {
 	id 'java'
 	id 'war'
@@ -35,8 +31,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// query dsl
-	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-jpa:5.0.0"
+	implementation "com.querydsl:querydsl-apt:5.0.0"
+
 
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
@@ -57,7 +54,7 @@ dependencies {
 }
 
 //dsl
-def querydslDir = "build/generated/querydsl"
+def querydslDir = "$buildDir/generated/querydsl"
 querydsl { //dsl
 	jpa = true
 	querydslSourcesDir = querydslDir
@@ -76,6 +73,10 @@ configurations { // 이놈
 
 compileQuerydsl { // 이놈
 	options.annotationProcessorPath = configurations.querydsl
+}
+
+tasks.withType(JavaCompile).configureEach {
+	options.encoding = 'UTF-8'
 }
 //dsl end
 

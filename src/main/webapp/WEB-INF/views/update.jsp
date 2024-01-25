@@ -259,7 +259,7 @@ if(session.getAttribute("userID")!=null){
 						<span id="afterFile">┃ 파일첨부 :&nbsp;&nbsp;
 							<label for="fileupload" id="click" class="btn-blue">click !</label>&nbsp;&nbsp;
 							<div id="filename"></div>
-							<input type="file" id="fileupload" name="fileupload" onchange="filename(this)" >
+							<input type="file" id="fileupload" name="file" onchange="filename(this)" >
 						</span>
 					</div>
 					</c:when>
@@ -267,7 +267,7 @@ if(session.getAttribute("userID")!=null){
 						<div id="file2">파일첨부 :&nbsp;&nbsp;
 							<label for="fileupload" id="click" class="btn-blue">click !</label>&nbsp;&nbsp;
 							<div id="filename"></div>
-							<input type="file" id="fileupload" name="fileupload" onchange="filename(this)" >
+							<input type="file" id="fileupload" name="file" onchange="filename(this)" >
 						</div>
 					</c:otherwise>
 					</c:choose>

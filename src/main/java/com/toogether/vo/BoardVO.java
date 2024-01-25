@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Table(name="board")
 public class BoardVO implements Comparable<BoardVO>{
 
-    @Id @GeneratedValue
+    @Id
     @Column(name = "boardID")
     private int boardID;
 
@@ -60,6 +60,11 @@ public class BoardVO implements Comparable<BoardVO>{
         this.boardDate = boardDate;
         this.boardContent = boardContent;
         this.boardCategory = boardCategory;
+        this.filename = filename;
+        this.fileRealname = fileRealname;
+    }
+
+    public BoardVO(String filename, String fileRealname) {
         this.filename = filename;
         this.fileRealname = fileRealname;
     }
