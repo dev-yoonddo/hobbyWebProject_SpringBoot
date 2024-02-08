@@ -4,6 +4,8 @@ import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.service.BoardService;
 import com.toogether.vo.BoardVO;
 import com.toogether.vo.FileVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,8 @@ import java.util.Optional;
 public class BoardController {
     @Autowired
     private final BoardService boardService;
+    //logger
+    private final Logger log = LoggerFactory.getLogger(BoardController.class);
     public BoardController(BoardService boardService){
         this.boardService = boardService;
     }
@@ -33,9 +37,11 @@ public class BoardController {
     @GetMapping("/{category}")
     public String search(@PathVariable("category") String category,
                          Model model) {
-        System.out.println("컨트롤러의 search() 메소드");
+        log.debug("컨트롤러의 search() 메소드");
         List<BoardVO> bdlist = boardService.getBoardList(category);
-        System.out.println("검색 결과: " + bdlist);
+        log.info("검색 결과" + bdlist);
+
+        //System.out.println("검색 결과: " + bdlist);
         model.addAttribute("category", category);
         model.addAttribute("bdlist", bdlist);
         return "search";
@@ -62,8 +68,8 @@ public class BoardController {
         boardService.viewCount(boardID);
         //한 개의 글 가져오기
         BoardVO vo = boardService.getBoardVO(boardID);
-        System.out.println("글 보기: " + vo);
-        System.out.println("하트여부: " + exist);
+        log.debug("글 보기: " + vo);
+        log.debug("하트여부: " + exist);
         model.addAttribute("exist", exist); // 하트 클릭 여부 전달
         model.addAttribute("vo", vo); // 한 개의 글 내용 전달
         return "view";
@@ -71,8 +77,8 @@ public class BoardController {
     //글 작성 페이지
     @GetMapping("/newpost")
     public String write(@RequestParam("category") String category, Model model){
-        System.out.println("글 작성 페이지");
-        System.out.println(category);
+        log.debug("글 작성 페이지");
+        log.debug(category);
         model.addAttribute("category",category);
         return "write";
     }
@@ -81,8 +87,8 @@ public class BoardController {
     public String writeAction(BoardVO vo,
                               Model model,
                               @RequestParam MultipartFile file) throws IOException {
-        System.out.println("글 작성 실행: " + vo);
-        System.out.println("파일: " + file);
+        log.debug("글 작성 실행: " + vo);
+        log.debug("파일: " + file);
         if(!file.isEmpty()) { //첨부파일 존재시 파일 업로드 실행 후 파일 이름, 파일 유니크 이름 가져오기
             BoardVO fileupload = boardService.fileupload(file);
             vo.setFilename(fileupload.getFilename());
@@ -105,7 +111,7 @@ public class BoardController {
     @GetMapping("/newpost/{id}")
     public String update(@PathVariable("id") int boardID, Model model){
         BoardVO vo = boardService.getBoardVO(boardID);
-        System.out.println("글 수정: " + vo);
+        log.debug("글 수정: " + vo);
         model.addAttribute("vo",vo);
         return "update";
     }
@@ -115,10 +121,10 @@ public class BoardController {
     public String updateAction(@PathVariable("id")int boardID,
                                BoardUpdateDTO vo,
                                Model model) throws UnsupportedEncodingException {
-        System.out.println("글 수정 실행: " + vo);
+        log.debug("글 수정 실행: " + vo);
         Optional<BoardVO> updatevo = boardService.updateAction(vo);
         //int result = boardService.updateAction(vo);
-        System.out.println("글 수정 결과: " + updatevo);
+        log.debug("글 수정 결과: " + updatevo);
          if(updatevo.isPresent()){
              /*/한글 깨짐
              String title = updatevo.get().getBoardTitle();
@@ -142,10 +148,10 @@ public class BoardController {
                               @RequestParam("userID") String userID,
                               @RequestParam("value") String value,
                               HttpServletResponse response) throws IOException {
-        System.out.println("하트실행:" + boardID + userID + value);
+        log.debug("하트실행:" + boardID + userID + value);
         PrintWriter script = response.getWriter();
         int result = boardService.heartAction(boardID, userID, value);
-        System.out.println("하트실행결과:" + result);
+        log.debug("하트실행결과:" + result);
         if(result > 0){
             script.print("success");
             script.close();
@@ -156,13 +162,13 @@ public class BoardController {
     }
 
     //파일 다운로드
-    @RequestMapping("/download/{id}")
+    @GetMapping("/download/{id}")
     public void fileDownload(@PathVariable("id") int boardID, HttpServletRequest request, HttpServletResponse response){
         int result = boardService.fileDownload(boardID, request, response);
         if(result == 0){
-            System.out.println("다운로드실패");
+            log.debug("다운로드실패");
         }else{
-            System.out.println("다운로드성공");
+            log.debug("다운로드성공");
             boardService.fileDownCount(boardID); //다운로드 횟수 + 1
         }
     }

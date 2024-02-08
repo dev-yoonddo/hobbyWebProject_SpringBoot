@@ -163,6 +163,7 @@ button {
 </form>
 </div>
 </section>
+
 <script>
 var selectedCat = null;
 function search(){

@@ -22,20 +22,8 @@
 				</div>
 				<ul class="navbar_menu" style="float: left;">
 					<li><a href="/community" class="menu">COMMUNITY</a></li>
-					<%
-						if (userID == null) {
-					%>
-					<li><a id="go-group-1" class="menu">GROUP</a></li>
-					<!-- <li><a id="go-spot-1" class ="menu">SPOT</a></li> -->
-					<%
-						} else {
-					%>
-					<li><a id="go-group-2" class="menu"
-						onclick="location.href='groupPage'">GROUP</a></li>
-					<%
-						}
-					%>
-					<li><a class="menu" onclick="location.href='spot'">SPOT</a></li>
+
+					<li><a href="/logincheck" class="menu" >SPOT</a></li>
 				</ul>
 			</nav>
 			<ul class="navbar_login">
@@ -59,6 +47,13 @@
 			</a> <input type="checkbox" id="toggleDeActive" hidden="hidden">
 		</nav>
 	</div>
-
+<script>
+let msg = "${msg}";
+if (msg != "") {
+    console.log(msg);
+    alert(msg);
+    window.location.replace("${url}");
+}
+</script>
 </body>
 </html>

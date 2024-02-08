@@ -1,6 +1,7 @@
 package com.toogether.service.lmpl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.toogether.controller.HomeController;
 import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.repo.BoardRepo;
 import com.toogether.repo.HeartRepo;
@@ -9,6 +10,8 @@ import com.toogether.service.FileService;
 import com.toogether.vo.BoardVO;
 import com.toogether.vo.FileVO;
 import com.toogether.vo.HeartVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.query.JpaQueryMethod;
@@ -34,6 +37,7 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
     @Autowired
     private final BoardRepo boardRepo;
     private final HeartRepo heartRepo;
+    private final Logger log = LoggerFactory.getLogger(BoardServiceImpl.class);
 
     @Value("${file.dir}")
     private String fileDir;
@@ -53,9 +57,9 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
                 boardList.add(i);
             }
         }
-        System.out.println(boardList);
+        log.debug(boardList.toString());
         Collections.sort(boardList, Collections.reverseOrder());
-        System.out.println("List DESC: " + boardList);
+        log.debug("List DESC: " + boardList);
         return boardList;
     }
     @Override
@@ -64,7 +68,7 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
         boardRepo.findById(boardID).ifPresent( v-> {
             v.setViewCount(vo.getViewCount() + 1);
             boardRepo.save(v);
-            System.out.println("조회수++" + v);
+            log.debug("조회수++" + v);
 
         });
     }
@@ -77,14 +81,14 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
     public BoardVO writeAction(BoardVO vo) {
         LocalDateTime date = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println("글 작성 내용: " + vo);
+        log.debug("글 작성 내용: " + vo);
         int boardID = getBoardIdx();
         vo.setBoardID(boardID + 1); // 새 글 번호
         vo.setBoardDate(date.format(formatter)); // 새 글 작성 시간
         vo.setBoardAvailable(1); // 유효한 값으로 변경
 
-        System.out.println("새 글 번호: "+ vo.getBoardID());
-        System.out.println("새 글 작성시간: "+ vo.getBoardDate());
+        log.debug("새 글 번호: "+ vo.getBoardID());
+        log.debug("새 글 작성시간: "+ vo.getBoardDate());
 
         return boardRepo.save(vo);
     }
@@ -120,7 +124,7 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
         boardRepo.findById(boardID).ifPresent( v-> {
             v.setBoardAvailable(0);
             boardRepo.save(v);
-            System.out.println("삭제: " + v);
+            log.debug("삭제: " + v);
         });
     }
     @Override
@@ -130,13 +134,13 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
         if(heartRepo.findByBoardIDAndUserID(boardID,userID) != null){
             result = "Y";
         }
-        System.out.println("하트 여부: " + result);
+        log.debug("하트 여부: " + result);
         return result;
     }
     @Override
     public int heartAction(int boardID, String userID, String value){
         HeartVO vo = new HeartVO(boardID, userID);
-        System.out.println("하트: " + vo);
+        log.debug("하트: " + vo);
         if(value.equals("none")){
             heartRepo.save(vo);
             //heart 정상적으로 실행시 board의 viewCount + 1
@@ -161,7 +165,7 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
                 v.setHeartCount(vo.getHeartCount() - 1);
             }
             boardRepo.save(v);
-            System.out.println("하트수: " + v);
+            log.debug("하트수: " + v);
         });
         return 1;
     }
@@ -176,7 +180,7 @@ public class BoardServiceImpl extends FileServiceImpl implements BoardService {
         boardRepo.findById(boardID).ifPresent( v-> {
             v.setFileDownCount(vo.getFileDownCount() + 1);
             boardRepo.save(v);
-            System.out.println("다운로드횟수++" + v);
+            log.debug("다운로드횟수++" + v);
         });
         return 1;
     }

@@ -2,8 +2,11 @@ package com.toogether.controller;
 
 import com.toogether.service.BoardService;
 import com.toogether.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +19,7 @@ public class HomeController{
     @Autowired
     private final UserService userService;
     private final BoardService boardService;
+    private final Logger log = LoggerFactory.getLogger(HomeController.class);
 
     public HomeController(UserService service, BoardService boardService) {
         this.userService = service;
@@ -23,20 +27,31 @@ public class HomeController{
     }
     @RequestMapping(value={"/community"})
     public String community() {
-        System.out.println("컨트롤러의 community() 메소드");
+        log.debug("컨트롤러의 community() 메소드");
         return "community";
     }
     @GetMapping(value={"/", "/user/community"})
     public String home() {
-        System.out.println("컨트롤러의 home() 메소드");
+        log.debug("컨트롤러의 home() 메소드");
         return "redirect:/community";
     }
     @RequestMapping("/logout")
     public String logoutAction(HttpServletRequest request){
-        System.out.println("로그아웃");
+        log.debug("로그아웃");
         HttpSession session = request.getSession();
         session.invalidate();
         return "redirect:community";
+    }
+    @RequestMapping("/logincheck")
+    public String check(HttpSession session, Model model){
+        String userID = (String)session.getAttribute("userID");
+        if(userID == null){
+            model.addAttribute("msg","로그인이 필요합니다");
+            model.addAttribute("url","login");
+        }else{
+            model.addAttribute("url","userUpdate");
+        }
+        return "community";
     }
 //    @GetMapping("/get")
 //    public String Accessmain(Model model){

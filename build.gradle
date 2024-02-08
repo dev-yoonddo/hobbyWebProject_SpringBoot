@@ -19,6 +19,11 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	querydsl.extendsFrom compileClasspath
+	//log4j2 충돌 방지
+	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	all*.exclude group: 'org.springframework.boot', module: 'logback-classic'
+
 }
 
 repositories {
@@ -34,7 +39,9 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:5.0.0"
 	implementation "com.querydsl:querydsl-apt:5.0.0"
 
-
+	//logging
+	implementation "org.springframework.boot:spring-boot-starter-log4j2"
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 
 	//	jsp
@@ -62,13 +69,6 @@ querydsl { //dsl
 
 sourceSets { //이놈
 	main.java.srcDir querydslDir
-}
-
-configurations { // 이놈
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-	querydsl.extendsFrom compileClasspath
 }
 
 compileQuerydsl { // 이놈
