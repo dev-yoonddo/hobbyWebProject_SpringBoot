@@ -30,6 +30,14 @@ public class HomeController{
         log.debug("컨트롤러의 community() 메소드");
         return "community";
     }
+    @GetMapping("/spot")
+    public String spot(HttpSession session, Model model){
+        int check = logincheck(session);
+        if(check == 0){
+            model.addAttribute("msg","로그인이 필요합니다");
+        }
+            return "spot";
+    }
     @GetMapping(value={"/", "/user/community"})
     public String home() {
         log.debug("컨트롤러의 home() 메소드");
@@ -42,16 +50,14 @@ public class HomeController{
         session.invalidate();
         return "redirect:community";
     }
-    @RequestMapping("/logincheck")
-    public String check(HttpSession session, Model model){
+
+    public int logincheck(HttpSession session){
         String userID = (String)session.getAttribute("userID");
         if(userID == null){
-            model.addAttribute("msg","로그인이 필요합니다");
-            model.addAttribute("url","login");
+            return 0;
         }else{
-            model.addAttribute("url","userUpdate");
+            return 1;
         }
-        return "community";
     }
 //    @GetMapping("/get")
 //    public String Accessmain(Model model){

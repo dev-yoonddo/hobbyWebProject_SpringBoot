@@ -13,10 +13,8 @@ import javax.persistence.PersistenceContext;
 @EnableJpaAuditing
 @EnableJpaRepositories(basePackages = "com.toogether")
 public class JPAConfig {
-
     @PersistenceContext
     private EntityManager entityManager;
-
     @Bean
     public JPAQueryFactory queryFactory(){
         return new JPAQueryFactory(entityManager);

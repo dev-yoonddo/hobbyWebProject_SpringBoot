@@ -23,7 +23,7 @@
 				<ul class="navbar_menu" style="float: left;">
 					<li><a href="/community" class="menu">COMMUNITY</a></li>
 
-					<li><a href="/logincheck" class="menu" >SPOT</a></li>
+					<li><a href="/spot" class="menu" >SPOT</a></li>
 				</ul>
 			</nav>
 			<ul class="navbar_login">
@@ -51,8 +51,13 @@
 let msg = "${msg}";
 if (msg != "") {
     console.log(msg);
-    alert(msg);
-    window.location.replace("${url}");
+   let ok = confirm(msg);
+   if(ok == true){
+    location.href='login';
+    }else{
+    history.back();
+    }
+    //window.location.replace("login");
 }
 </script>
 </body>
