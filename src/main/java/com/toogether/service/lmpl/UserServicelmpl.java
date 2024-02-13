@@ -4,10 +4,15 @@ import com.toogether.repo.UserRepo;
 import com.toogether.service.UserService;
 import com.toogether.vo.BoardVO;
 import com.toogether.vo.UserVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,6 +25,7 @@ import java.util.Optional;
 @Service
 public class UserServicelmpl implements UserService {
     private UserRepo userRepo;
+    private final Logger log = LoggerFactory.getLogger(UserServicelmpl.class);
 
     @Autowired
     public void UserServiceImpl(UserRepo userRepo) {
@@ -91,6 +97,7 @@ public class UserServicelmpl implements UserService {
         System.out.println("회원 정보: "+vo);
         return vo;
     }
+
     //회원 정보 업데이트
     @Override
     public int userUpdateAction(UserVO vo) {

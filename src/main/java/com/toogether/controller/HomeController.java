@@ -32,11 +32,7 @@ public class HomeController{
     }
     @GetMapping("/spot")
     public String spot(HttpSession session, Model model){
-        int check = logincheck(session);
-        if(check == 0){
-            model.addAttribute("msg","로그인이 필요합니다");
-        }
-            return "spot";
+        return "spot";
     }
     @GetMapping(value={"/", "/user/community"})
     public String home() {
@@ -51,14 +47,6 @@ public class HomeController{
         return "redirect:community";
     }
 
-    public int logincheck(HttpSession session){
-        String userID = (String)session.getAttribute("userID");
-        if(userID == null){
-            return 0;
-        }else{
-            return 1;
-        }
-    }
 //    @GetMapping("/get")
 //    public String Accessmain(Model model){
 //        Map<String, Object> result = service.getMain();

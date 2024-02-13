@@ -47,6 +47,9 @@ dependencies {
 	//websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	//oauth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
 	//	jsp
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'

@@ -13,14 +13,21 @@ import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/check")
 public class CheckController {
     @Autowired
     private BoardRepo boardRepo;
     @GetMapping("/new")
-    public Map<String,Integer> getBoardID(){
-        Map<String,Integer> value;
-        int boardID = boardRepo.findByMax()+1;
-        String type = boardID.getName();
-
+    public int getBoardID(){
+        return boardRepo.findByMax()+1;
+    }
+    @GetMapping("/login")
+    public String logincheck(HttpSession session){
+        String userID = (String)session.getAttribute("userID");
+        if(userID == null){
+            return "none";
+        }else{
+            return "exist";
+        }
     }
 }

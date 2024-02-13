@@ -23,7 +23,7 @@
 				<ul class="navbar_menu" style="float: left;">
 					<li><a href="/community" class="menu">COMMUNITY</a></li>
 
-					<li><a href="/spot" class="menu" >SPOT</a></li>
+					<li><a onclick="check()" class="menu" >SPOT</a></li>
 				</ul>
 			</nav>
 			<ul class="navbar_login">
@@ -48,17 +48,20 @@
 		</nav>
 	</div>
 <script>
-let msg = "${msg}";
-if (msg != "") {
-    console.log(msg);
-   let ok = confirm(msg);
-   if(ok == true){
-    location.href='login';
-    }else{
-    history.back();
-    }
-    //window.location.replace("login");
+function check(){
+    location.href='/check-login';
 }
+//let msg = "${msg}";
+//if (msg != "") {
+//    console.log(msg);
+//   let ok = confirm(msg);
+//   if(ok == true){
+//    location.href='login';
+//    }else{
+//    history.back();
+//    }
+    //window.location.replace("login");
+//}
 </script>
 </body>
 </html>

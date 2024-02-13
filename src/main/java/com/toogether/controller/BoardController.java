@@ -24,7 +24,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping(value="/community")
-public class BoardController {
+public class BoardController extends CheckController{
     @Autowired
     private final BoardService boardService;
     //logger
@@ -138,9 +138,10 @@ public class BoardController {
     //글 삭제
     @GetMapping("/delpost/{id}")
     public String deleteAction(@PathVariable("id") int id,
-                               @ModelAttribute("category") String category){
+                               @ModelAttribute("category") String category
+                                ){
         boardService.deleteAction(id);
-        return "/community/"+category.toLowerCase();
+        return "/community/" + category.toLowerCase();
     }
     //하트 클릭 또는 취소
     @PostMapping("/post/heart")
@@ -172,4 +173,5 @@ public class BoardController {
             boardService.fileDownCount(boardID); //다운로드 횟수 + 1
         }
     }
+
 }

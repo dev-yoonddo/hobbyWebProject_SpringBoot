@@ -40,6 +40,11 @@ public class UserVO {
     @Column(name = "userEmailChecked")
     private int userEmailChecked;
 
+    @Column(name = "provider")
+    private String provider;
+
+    @Column(name = "providerID")
+    private String providerID;
     public UserVO() {}
 
     public UserVO(String userID, String userPassword){
