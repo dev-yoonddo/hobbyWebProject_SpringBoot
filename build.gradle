@@ -2,9 +2,8 @@
 plugins {
 	id 'java'
 	id 'war'
-	id 'org.springframework.boot' version '2.6.7'
-	id 'io.spring.dependency-management' version '1.1.3'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" // 플러그인 추가
+	id 'org.springframework.boot' version '3.1.10'
+	id 'io.spring.dependency-management' version '1.1.4'
 
 }
 
@@ -12,7 +11,7 @@ group = 'com.toogether'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = '8'
+	sourceCompatibility = '17'
 }
 
 configurations {
@@ -36,8 +35,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// query dsl
-	implementation "com.querydsl:querydsl-jpa:5.0.0"
-	implementation "com.querydsl:querydsl-apt:5.0.0"
+	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	//logging
 	implementation "org.springframework.boot:spring-boot-starter-log4j2"
@@ -47,43 +48,57 @@ dependencies {
 	//websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
 	//oauth2
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 	//	jsp
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
-	implementation 'javax.servlet:jstl'
+	implementation group: 'org.glassfish.web', name: 'jakarta.servlet.jsp.jstl', version: '2.0.0'
+
+	//dsl
+	def querydslDir = 'src/main/generated'
+	clean{
+		delete file(querydslDir)
+	}
+
+	tasks.withType(JavaCompile){
+		options.encoding = 'UTF-8'
+		options.generatedSourceOutputDirectory = file(querydslDir)
+	}
+//dsl end
+
 	// ------
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
 	//implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	//jstl
-	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
 }
 
 //dsl
-def querydslDir = "$buildDir/generated/querydsl"
-querydsl { //dsl
-	jpa = true
-	querydslSourcesDir = querydslDir
-}
-
-sourceSets { //이놈
-	main.java.srcDir querydslDir
-}
-
-compileQuerydsl { // 이놈
-	options.annotationProcessorPath = configurations.querydsl
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = 'UTF-8'
-}
+//def querydslDir = "$buildDir/generated/querydsl"
+//querydsl { //dsl
+//	jpa = true
+//	querydslSourcesDir = querydslDir
+//}
+//
+//sourceSets { //이놈
+//	main.java.srcDir querydslDir
+//}
+//
+//compileQuerydsl { // 이놈
+//	options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//tasks.withType(JavaCompile).configureEach {
+//	options.encoding = 'UTF-8'
+//}
 //dsl end
 
 tasks.named('bootBuildImage') {

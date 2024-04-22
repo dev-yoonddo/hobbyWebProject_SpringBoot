@@ -1,11 +1,9 @@
 package com.toogether.vo;
 
+import lombok.Builder;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Data //getter, setter를 선언하지 않고 사용할 수 있게 해주는 lombok 기능
@@ -40,11 +38,10 @@ public class UserVO {
     @Column(name = "userEmailChecked")
     private int userEmailChecked;
 
-    @Column(name = "provider")
-    private String provider;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 
-    @Column(name = "providerID")
-    private String providerID;
     public UserVO() {}
 
     public UserVO(String userID, String userPassword){
@@ -52,15 +49,25 @@ public class UserVO {
         this.userPassword = userPassword;
     }
 
-    public UserVO(String userID, String userName, String userEmail, String userBirth, String userPhone,String userPassword) {
+    @Builder
+    public UserVO(String userID, String userName, String userEmail, String userBirth, String userPhone,String userPassword, Role role) {
         this.userID = userID;
         this.userName = userName;
         this.userEmail = userEmail;
         this.userBirth = userBirth;
         this.userPhone = userPhone;
         this.userPassword = userPassword;
+        this.role = role;
     }
+    public UserVO update(String name, String picture) {
+        this.userID = userID;
+        this.userEmail = userEmail;
 
+        return this;
+    }
+    public String getRoleKey() {
+        return this.role.getKey();
+    }
     @Override
     public String toString() {
         return "UserVO [userID=" + userID + ", userName=" + userName + ", userEmail=" + userEmail + ", userBirth="

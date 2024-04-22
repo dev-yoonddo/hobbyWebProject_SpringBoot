@@ -1,6 +1,5 @@
 package com.toogether.repo.querydsl.Impl;
 
-import com.querydsl.core.NonUniqueResultException;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toogether.controller.BoardController;
 import com.toogether.repo.querydsl.BoardRepoCustom;
@@ -8,7 +7,6 @@ import com.toogether.vo.QBoardVO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.lang.Nullable;
 
 
 @RequiredArgsConstructor

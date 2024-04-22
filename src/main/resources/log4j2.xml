@@ -47,7 +47,7 @@
 
     <Loggers>
 
-        <Root level="ALL">
+        <Root level="INFO">
             <AppenderRef ref="console"/>
         </Root>
 

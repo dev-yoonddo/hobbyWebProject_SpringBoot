@@ -2,8 +2,13 @@ package com.toogether.controller;
 
 import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.service.BoardService;
+import com.toogether.service.FileService;
 import com.toogether.vo.BoardVO;
 import com.toogether.vo.FileVO;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -23,15 +24,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
+@AllArgsConstructor
 @RequestMapping(value="/community")
 public class BoardController extends CheckController{
     @Autowired
     private final BoardService boardService;
+    private final FileService fileService;
     //logger
     private final Logger log = LoggerFactory.getLogger(BoardController.class);
-    public BoardController(BoardService boardService){
-        this.boardService = boardService;
-    }
 
     //카테고리 글 리스트 보기
     @GetMapping("/{category}")
@@ -84,7 +84,7 @@ public class BoardController extends CheckController{
     }
     //글 작성 실행
     @PostMapping("/newpost")
-    public String writeAction(BoardVO vo,
+    public String writeAction(@RequestBody BoardVO vo,
                               Model model,
                               @RequestParam MultipartFile file) throws IOException {
         log.debug("글 작성 실행: " + vo);
@@ -165,7 +165,7 @@ public class BoardController extends CheckController{
     //파일 다운로드
     @GetMapping("/download/{id}")
     public void fileDownload(@PathVariable("id") int boardID, HttpServletRequest request, HttpServletResponse response){
-        int result = boardService.fileDownload(boardID, request, response);
+        int result = fileService.fileDownload(boardID, request, response);
         if(result == 0){
             log.debug("다운로드실패");
         }else{

@@ -15,9 +15,9 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -105,6 +105,7 @@ public class UserServicelmpl implements UserService {
     }
     //회원 탈퇴
     @Override
+
     public void userDeleteAction(String userID) {
         System.out.println("탈퇴유저: " +userID);
         userRepo.delete(userRepo.getById(userID));

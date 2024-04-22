@@ -3,27 +3,24 @@ package com.toogether.controller;
 import com.toogether.service.BoardService;
 import com.toogether.service.UserService;
 import com.toogether.vo.UserVO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-
+@RequiredArgsConstructor
 @Controller
 public class UserController {
     @Autowired
     private final UserService userService;
     private final BoardService boardService;
 
-    public UserController(UserService userService, BoardService boardService) {
-        this.userService = userService;
-        this.boardService = boardService;
-    }
     //회원가입 페이지
     @RequestMapping("/join")
     public String join(Model model) {
@@ -130,6 +127,13 @@ public class UserController {
         script.print("fail");
         script.close();
     }
+//    @GetMapping(value={"/user/google"})
+//    public String googleLogin(Model model, @LoginUser SessionUser user) {
+//        if(user != null){
+//            model.addAttribute("userID", user.getUserID());
+//        }
+//        return "community";
+//    }
 //    @GetMapping("/{id}")
 //    public String getUserVO(@PathVariable String id){
 //        UserVO user = userRepo.getById(id);

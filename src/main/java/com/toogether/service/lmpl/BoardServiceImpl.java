@@ -1,32 +1,17 @@
 package com.toogether.service.lmpl;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.toogether.controller.HomeController;
 import com.toogether.dto.BoardUpdateDTO;
 import com.toogether.repo.BoardRepo;
 import com.toogether.repo.HeartRepo;
 import com.toogether.service.BoardService;
-import com.toogether.service.FileService;
 import com.toogether.vo.BoardVO;
-import com.toogether.vo.FileVO;
 import com.toogether.vo.HeartVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.query.JpaQueryMethod;
-import org.springframework.data.jpa.repository.query.JpaQueryMethodFactory;
-import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
-import java.sql.Time;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;

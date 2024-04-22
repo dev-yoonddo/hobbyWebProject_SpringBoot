@@ -35,3 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### oauth 깃에 업로드 하지 않음 ###
+application-oauth.properties
+

@@ -73,7 +73,6 @@ if(session.getAttribute("userID") != null){
 		    </c:if>
 		    <input type="submit" id="login" value="Login">
 		</form>
-		<a href="/oauth2/authorization/google">구글 로그인</a>
 		<div id="login-bottom">
 			<div id="remember">
 			    <label for="remember-check">
